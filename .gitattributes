@@ -1,2 +1,112 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# This program employs a custom encoding and decoding algorithm for text messages. The algorithm operates as follows:
+
+# 1. User provides a message and selects whether to "Code" or "Decode" it.
+# 2. If the user chooses "Code":
+#    - For each word in the message:
+#      - If the word has a length of 1, the character is encoded by shifting it to the next character in the character list, with an exception for the character 'm', which is replaced with 'u'.
+#      - If the word has a length of 2, both characters are encoded similarly.
+#      - If the word has a length greater than 2, three random characters are generated and inserted into the word, followed by encoding the first character.
+#      - The encoded word is printed.
+# 3. If the user chooses "Decode":
+#    - For each word in the encoded message:
+#      - If the word has a length of 1, the character is decoded by shifting it to the previous character in the character list, with an exception for the character 'u', which is replaced with 'm'.
+#      - If the word has a length of 2, both characters are decoded similarly.
+#      - If the word has a length greater than 2, specific characters are removed and the first character is decoded.
+#      - The decoded word is printed.
+
+# Note: If an error occurs during execution, an error message will be displayed.
+
+# BY GAURIYANSH
+# Date: 27.09.2023
+
+
+
+
+
+
+import random
+
+l=["q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m"]
+x=input("Enter The Message: ")
+xl=x.split()
+a=input("Code OR Decode: ")
+
+try:
+  if a.lower()=="code":
+    for words in xl:
+      if len(words)==1:
+        x1=l.index(words[0])+1
+        if words=="m":
+          print('u',end=" ")
+        else:
+          print(l[x1],end=" ")
+      elif len(words)==2:
+        x1=l.index(words[0])+1
+        x2=l.index(words[1])-1
+        if words[0]=="m":
+          print("u"+l[x2],end=" ")
+        elif words[1]=="q":
+          print(l[x1]+"l",end=" ")
+        else:
+          twoletter=(l[x1]+l[x2])
+          print(twoletter,end=" ")
+      else:
+        r1=random.choice(l)
+        r2=random.choice(l)
+        r3=random.choice(l)
+        r4=random.choice(l)
+        r5=random.choice(l)
+        r6=random.choice(l)
+
+        x2=l.index(words[0])+1
+
+        n1=words[:1]+r1+words[1:]
+        n2=n1[:2]+r2+n1[2:]
+        n3=n2[:3]+r3+n2[3:]
+        n4=n3[:-1]+r4+n3[-1:]
+        n5=n4[:-2]+r5+n4[-2:]
+        n6=n5[:-3]+r6+n5[-3:]
+        n7=l[x2]+n6[1:]
+        
+        print(f"{n7}", end=" ")
+
+  elif a.lower()=="decode":
+    try:
+     for coded_words in xl:
+       if len(coded_words)==1:
+         x1=l.index(coded_words[0])-1
+         if coded_words[0]=="u":
+           print("m",end=" ")
+         else:
+           print(l[x1],end=" ")
+       elif len(coded_words)==2:
+         x1=l.index(coded_words[0])-1
+         x2=l.index(coded_words[1])+1
+         if coded_words[0]=="u":
+           print("m"+l[x2],end=" ")
+         elif coded_words[1]=="l":
+           print(l[x1]+"q",end=" ")
+         else:
+           twoletter=(l[x1]+l[x2])
+           print(twoletter,end=" ")
+       else:
+         n1=coded_words[:1]+coded_words[4:]
+       
+         n4=n1[:-4]+n1[-1:]
+        
+         abc=l.index(coded_words[0])-1
+         n5=n4.replace(n4[0],l[abc],1)
+        
+         print(f"{n5}",end=" ")
+    except Exception:
+      print("The Word is not coded Properly")
+  else:
+    print("**Enter valid input**")
+
+
+      
+        
+except ValueError:
+  print("SORRY SOME ERROR OCCURED")
